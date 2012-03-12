@@ -3,6 +3,7 @@ package gilt4j;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.ArrayList;
 
 public class Sale {
 	private String name;
@@ -13,8 +14,8 @@ public class Sale {
 	private String saleUrl; // permanent link to sale website
 	private Calendar begins;
 	private Calendar ends;
-	private ImageUrl imageUrls;
-	private List<String> products; // product urls
+	private ImageUrlMap imageUrls;
+	private List<String> products = new ArrayList<String>(); // product urls
 	
 	public Calendar getEnds() {
 		return ends;
@@ -97,11 +98,11 @@ public class Sale {
 		this.saleUrl = saleUrl;
 	}
 
-	public ImageUrl getImageUrls() {
+	public ImageUrlMap getImageUrls() {
 		return imageUrls;
 	}
 
-	public void setImageUrls(ImageUrl imageUrls) {
+	public void setImageUrls(ImageUrlMap imageUrls) {
 		this.imageUrls = imageUrls;
 	}
 

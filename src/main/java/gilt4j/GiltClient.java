@@ -63,7 +63,7 @@ public class GiltClient {
 	}
 	
 	public Sale getSale(String storeKey, String saleKey) {
-		Sale s = get(GILT_API_URL_ROOT + storeKey + "/" + saleKey + "/detail.json", Sale.class);
+		Sale s = get(GILT_API_URL_ROOT + "sales/" + storeKey + "/" + saleKey + "/detail.json", Sale.class);
 		if (s == null) {
 			throw new RuntimeException("invalid sale key [" + saleKey + "] for store [" + storeKey + "]");
 		}

@@ -1,5 +1,6 @@
 package gilt4j;
 
+import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertTrue;
 import static org.testng.AssertJUnit.assertNotNull;
 import org.testng.annotations.BeforeMethod;
@@ -14,6 +15,12 @@ import gilt4j.Store;
 import java.util.*;
 
 public class GiltClientTest {
+
+	static
+	{
+		System.getProperties().put("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
+		System.getProperties().put("org.apache.commons.logging.simplelog.defaultlog", "trace");
+	}
 
 	private GiltClient client;
 	
@@ -63,6 +70,17 @@ public class GiltClientTest {
 		}
 	}
 	
+	@Test
+	public void getSaleByStoreNameAndSaleKey() {
+		List<Sale> activeSales = client.getActiveSales();
+		for (Sale sale : activeSales) {
+			Sale storeSale = client.getSale(sale.getStore(), sale.getSaleKey());
+			TestUtil.assertValid(storeSale);
+			assertEquals(sale.getStore(), storeSale.getStore());
+			assertEquals(sale.getSaleKey(), storeSale.getSaleKey());
+		}
+	}
+
 	@AfterMethod
 	public void cleanup() {
 		if (client != null) {

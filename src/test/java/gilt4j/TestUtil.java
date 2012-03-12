@@ -102,5 +102,7 @@ public class TestUtil {
 		assertTrue(sale.getBegins().getTimeInMillis() < sale.getEnds().getTimeInMillis());
 		assertNotNull(sale.getSaleUrl());
 		assertTrue(sale.getSaleUrl().startsWith("http"));
+		assertNotNull(sale.getImageUrls());
+		assertTrue(sale.getImageUrls().size() > 0);
 	}
 }
