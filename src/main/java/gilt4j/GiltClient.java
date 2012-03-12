@@ -9,6 +9,9 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.params.AllClientPNames;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import gilt4j.internal.httpclient.GzipRequestInterceptor;
+import gilt4j.internal.httpclient.GzipResponseInterceptor;
+
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
@@ -146,12 +149,13 @@ public class GiltClient {
 	
 	protected HttpClient createHttpClient()
 	{
-		// TODO : enable gzip compression in HttpClient
-		
 		DefaultHttpClient client = new DefaultHttpClient();
 		
 		client.getParams().setParameter(AllClientPNames.USER_AGENT, "gilt4j library");
 
+		client.addRequestInterceptor(GzipRequestInterceptor.getInstance());
+		client.addResponseInterceptor(GzipResponseInterceptor.getInstance());
+		
 		return client;
 	}
 	
