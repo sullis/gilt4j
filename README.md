@@ -1,8 +1,4 @@
 # gilt4j
 
-Java library for Gilt's API
-
-# See also
-
-http://dev.gilt.com
+Java library for <a href="http://dev.gilt.com/">Gilt's API</a>
 
