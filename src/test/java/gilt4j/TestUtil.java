@@ -1,20 +1,17 @@
 package gilt4j;
 
-import java.util.List;
-import static org.testng.Assert.*;
-import java.util.Properties;
-import java.io.InputStream;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
-import gilt4j.ImageUrl;
-import gilt4j.ImageUrlMap;
-import gilt4j.Product;
-import gilt4j.Sale;
-import gilt4j.Sku;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Properties;
 
 public class TestUtil {
 
 	private static Properties testProps;
-	
+
 	static {
 		testProps = new Properties();
 		InputStream input = TestUtil.class.getResourceAsStream("/test.properties");
@@ -30,18 +27,18 @@ public class TestUtil {
 			}
 		}
 	}
-	
+
 	public static String getApiKey() {
 		return testProps.getProperty("apikey");
 	}
-	
+
 	public static void assertValid(List<Sale> sales) {
 		assertNotNull(sales);
 		for (Sale s : sales) {
 			assertValid(s);
 		}
 	}
-	
+
 	public static void assertValid(Product product) {
 		assertNotNull(product);
 		assertNotNull(product.getBrand());
@@ -50,21 +47,22 @@ public class TestUtil {
 		assertNotNull(product.getProduct());
 		assertValidSkuList(product.getSkus());
 		assertNotNull(product.getUrl());
-		
+		assertTrue(product.getUrl().startsWith("http"));
+
 		ImageUrlMap imageUrls = product.getImageUrls();
-		
+
 		assertNotNull(imageUrls);
-		
+
 		for (String imageKey : imageUrls.keySet()) {
 			assertNotNull(imageKey);
 			List<ImageUrl> details = imageUrls.get(imageKey);
 			assertValidImageDetailList(details);
 		}
-		
 	}
-	
+
 	public static void assertValidSkuList(List<Sku> skus) {
 		assertNotNull(skus);
+		assertTrue(skus.size() > 0);
 		for (Sku sku : skus) {
 			assertValid(sku);
 		}
@@ -83,7 +81,7 @@ public class TestUtil {
 			assertValid(detail);
 		}
 	}
-	
+
 	public static void assertValid(ImageUrl detail) {
 		assertNotNull(detail);
 		assertNotNull(detail.getUrl());
@@ -91,7 +89,7 @@ public class TestUtil {
 		assertNotNull(detail.getHeight());
 		assertNotNull(detail.getWidth());
 	}
-	
+
 	public static void assertValid(Sale sale) {
 		assertNotNull(sale);
 		assertNotNull(sale.getStore());
@@ -100,6 +98,18 @@ public class TestUtil {
 		assertNotNull(sale.getBegins());
 		assertNotNull(sale.getEnds());
 		assertTrue(sale.getBegins().getTimeInMillis() < sale.getEnds().getTimeInMillis());
+		if (sale.isActive()) {
+			assertFalse(sale.isOver());
+			assertFalse(sale.isUpcoming());
+		}
+		if (sale.isOver()) {
+			assertFalse(sale.isActive());
+			assertFalse(sale.isUpcoming());
+		}
+		if (sale.isUpcoming()) {
+			assertFalse(sale.isOver());
+			assertFalse(sale.isActive());
+		}
 		assertNotNull(sale.getSaleUrl());
 		assertTrue(sale.getSaleUrl().startsWith("http"));
 		assertNotNull(sale.getImageUrls());
