@@ -1,5 +1,6 @@
 package gilt4j;
 
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
@@ -48,16 +49,7 @@ public class TestUtil {
 		assertValidSkuList(product.getSkus());
 		assertNotNull(product.getUrl());
 		assertTrue(product.getUrl().startsWith("http"));
-
-		ImageUrlMap imageUrls = product.getImageUrls();
-
-		assertNotNull(imageUrls);
-
-		for (String imageKey : imageUrls.keySet()) {
-			assertNotNull(imageKey);
-			List<ImageUrl> details = imageUrls.get(imageKey);
-			assertValidImageDetailList(details);
-		}
+		assertValid(product.getImageUrls());
 	}
 
 	public static void assertValidSkuList(List<Sku> skus) {
@@ -73,6 +65,13 @@ public class TestUtil {
 		assertNotNull(sku.getId());
 		assertNotNull(sku.getInventoryStatus());
 		assertNotNull(sku.getColor());
+		assertNotNull(sku.getMsrpPrice());
+		assertEquals(sku.getMsrpPrice().signum(), 1);
+		assertNotNull(sku.getSalePrice());
+		assertEquals(sku.getSalePrice().signum(), 1);
+		assertNotNull(sku.getShippingSurcharge());
+		assertTrue(sku.getShippingSurcharge().signum() >= 0);
+		assertNotNull(sku.getAttributes());
 	}
 
 	public static void assertValidImageDetailList(List<ImageUrl> details) {
@@ -112,7 +111,19 @@ public class TestUtil {
 		}
 		assertNotNull(sale.getSaleUrl());
 		assertTrue(sale.getSaleUrl().startsWith("http"));
-		assertNotNull(sale.getImageUrls());
-		assertTrue(sale.getImageUrls().size() > 0);
+		assertValid(sale.getImageUrls());
+
+	}
+
+	public static void assertValid(ImageUrlMap imageUrls) {
+		assertNotNull(imageUrls);
+
+		for (String imageKey : imageUrls.keySet()) {
+			// System.out.println("imageKey: " + imageKey);
+			assertNotNull(imageKey);
+			List<ImageUrl> details = imageUrls.get(imageKey);
+			assertValidImageDetailList(details);
+		}
+
 	}
 }

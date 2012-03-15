@@ -9,8 +9,32 @@ public class Sku {
 	private String inventoryStatus;
 	private BigDecimal msrpPrice;
 	private BigDecimal salePrice;
-	private BigDecimal shippingSurcharge;
-	private final List<SkuAttribute> attributes = new ArrayList<SkuAttribute>();
+	private final BigDecimal shippingSurcharge = BigDecimal.ZERO;
+	private List<SkuAttribute> attributes = new ArrayList<SkuAttribute>();
+
+	public BigDecimal getMsrpPrice() {
+		return msrpPrice;
+	}
+
+	public void setMsrpPrice(BigDecimal msrpPrice) {
+		this.msrpPrice = msrpPrice;
+	}
+
+	public void setSalePrice(BigDecimal salePrice) {
+		this.salePrice = salePrice;
+	}
+
+	public BigDecimal getSalePrice() {
+		return salePrice;
+	}
+
+	public void setAttributes(List<SkuAttribute> attrList) {
+		attributes = attrList;
+	}
+
+	public List<SkuAttribute> getAttributes() {
+		return attributes;
+	}
 
 	public boolean isSoldOut() {
 		return "sold out".equals(getInventoryStatus());
